@@ -7,7 +7,7 @@ use std::path::Path;
 #[derive(Parser)]
 #[command(author="https://github.com/falkwitte", version)]
 struct Opts{
-    /// removes custom dir entry
+    /// remove custom path, works with ',' seperated list | e.g.: clear-git -r hello.txt,world.txt | 
     #[arg(default_value="")]
     #[arg(long="remove")]
     #[arg(short='r')]
@@ -21,8 +21,9 @@ fn main() {
 
 
     if !args.dir.is_empty() { 
+        let mut to_push_string: Vec<&str> = args.dir.split_terminator(',').collect();
         // remove custom user dir
-        blacklist.push(&args.dir);
+        blacklist.append(&mut to_push_string);
     }
 
     if let Ok(entries) = read_dir(".") {
