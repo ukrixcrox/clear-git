@@ -13,11 +13,21 @@ struct Opts{
     #[arg(long="remove")]
     #[arg(short='r')]
     dir:String,
+
+    /// Don't remove '.idea'
+    #[arg(long="dont_remove_idea")]
+    #[arg(short='i')]
+    remove_idea:bool,
+
+    /// Don't remove '.obsidian'
+    #[arg(long="dont_remove_obsidian")]
+    #[arg(short='o')]
+    remove_obsidian:bool,
 }
 
 
 fn main() {
-    let mut blacklist = vec![".obsidian", ".idea"];
+    let mut blacklist = vec![];
     let args = Opts::parse();
 
 
@@ -26,6 +36,16 @@ fn main() {
         let mut to_push_string: Vec<&str> = args.dir.split_terminator(',').collect();
         blacklist.append(&mut to_push_string);
     }
+
+    if !args.remove_idea{
+        blacklist.push(".idea");
+    }
+
+    if !args.remove_obsidian{
+        blacklist.push(".obsidian");
+    }
+
+    println!("{}{:?}", "Remove: ".bold(), blacklist);
 
     if let Ok(entries) = read_dir(".") {
         for entry in entries.flatten(){
