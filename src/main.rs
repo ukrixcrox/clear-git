@@ -1,6 +1,7 @@
 use clap::Parser;
 use std::fs::{remove_dir_all, read_dir, remove_file};
 use std::path::Path;
+use colored::Colorize;
 
 
 /// Simple cli to remove unwanted files from a git folder
@@ -20,9 +21,9 @@ fn main() {
     let args = Opts::parse();
 
 
+    // remove user dir entry
     if !args.dir.is_empty() { 
         let mut to_push_string: Vec<&str> = args.dir.split_terminator(',').collect();
-        // remove custom user dir
         blacklist.append(&mut to_push_string);
     }
 
@@ -36,11 +37,13 @@ fn main() {
             for i in blacklist.iter(){
                 // remove dir
                 if i == &entry_string.as_str() && Path::new(i).is_dir(){
-                    remove_dir_all(&entry_string).unwrap_or_else(|_| println!("Error: No such file or directory"));
+                    remove_dir_all(&entry_string).unwrap_or_else(|_| println!("{}","Error: No such file or directory".bold().red()));
+                    println!("{}{}", "Removed dir: ".bold().red(), i.bold().blue());
 
                 // remove file
                 }else if i == &entry_string && !Path::new(i).is_dir(){
-                    remove_file(&entry_string).unwrap_or_else(|_| println!("Error: No such file or directory"));
+                    remove_file(&entry_string).unwrap_or_else(|_| println!("{}","Error: No such file or directory".bold().red()));
+                    println!("{}{}", "Removed file: ".bold().red(), i.bold());
                 }
             }
         }
