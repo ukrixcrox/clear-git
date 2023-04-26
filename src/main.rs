@@ -28,10 +28,10 @@ fn main() {
     if !check_config_file_existence(&config_dir_str) {
         create_config_file(&config_dir_str);
         println!(
-            "Config file path:{}",
+            "{}\n{}", "Config file path:".bold().blue(),
             config_dir_str.to_owned() + "/clear_git_config.txt"
         );
-        println!("\nFill the config file up with files you want to remove when running 'clear-git',\nthere are some examples");
+        println!("\nFill the config file up with files you want to remove when running 'clear-git',\nthere are some examples in the file");
         exit(0x0100);
     }
 
