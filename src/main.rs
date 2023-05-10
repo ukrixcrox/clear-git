@@ -9,7 +9,7 @@ use utils::check_config_file_existence;
 mod utils;
 
 /// Simple cli to remove unwanted files from a git folder
-/// | Removes '.obsidian' and '.idea' as standard
+/// | Removes '.idea' and '.vscode' as standard
 #[derive(Parser)]
 #[command(author = "https://github.com/falkwitte", version)]
 struct Opts {
